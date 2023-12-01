@@ -1,0 +1,12 @@
+<h3>SIGN IN</h3>
+
+<form action="/signin" method="post">
+{% csrf_token %}	
+	<label for="">Username</label>
+	<input type="text" id = "username" name="username" placeholder="Enter Your Username" required>
+	<br>
+	<label>Password</label>
+	<input type="password" id = "password1" name="password1" placeholder="Enter Your Username"  required>
+	<br>
+	<button type="submit">Sign In</button>
+</form>
