@@ -92,7 +92,7 @@ def signup(request):
 
 		#email.fail_silently = True
 
-		mail_item1.Display()
+		#mail_item1.Display()
 		mail_item1.Save()
 		mail_item1.Send()
 
@@ -136,6 +136,6 @@ def activate(request, uidb64, token):
 		myuser.is_active = True
 		myuser.save()
 		login(request, myuser)
-		return redirect('home')
+		return redirect('signin')
 	else:
 		return render(request, 'authentication/activation_failed.html')	
