@@ -46,7 +46,6 @@ def signup(request):
 			messages.error(request,"Passwors didn't match!")
 
 
-
 		myuser = User.objects.create_user(username, email, password1)
 		myuser.first_name = fname
 		myuser.last_name = lname
@@ -139,3 +138,6 @@ def activate(request, uidb64, token):
 		return redirect('signin')
 	else:
 		return render(request, 'authentication/activation_failed.html')	
+
+def sample(request):
+	return render(request,"authentication/sample.html")
