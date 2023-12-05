@@ -13,6 +13,7 @@ from django.utils.encoding import force_bytes, force_str
 from . tokens import generate_token
 from django.template.loader import render_to_string
 import requests
+from decouple import config
 
 def home(request):
 	return render(request, "authentication/index.html")
@@ -50,7 +51,7 @@ def signup(request):
 		#Finding users location
 		user_ip_address = request.META.get('HTTP_X_FORWARDED_FOR') or request.META.get('REMOTE_ADDR')
 
-		access_key = '2dde3cc4f9a4b8ad41e3ba0033bb8570'
+		access_key = config('API_KEY')
 		ipstack_url = f'http://api.ipstack.com/{user_ip_address}?access_key={access_key}'
 		response = requests.get(ipstack_url)
 
