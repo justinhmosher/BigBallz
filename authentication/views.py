@@ -12,6 +12,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from . tokens import generate_token
 from django.template.loader import render_to_string
+import requests
+
 def home(request):
 	return render(request, "authentication/index.html")
 
@@ -45,13 +47,36 @@ def signup(request):
 		if password1 != password2:
 			messages.error(request,"Passwors didn't match!")
 
+		#Finding users location
+		user_ip_address = request.META.get('HTTP_X_FORWARDED_FOR') or request.META.get('REMOTE_ADDR')
 
-		myuser = User.objects.create_user(username, email, password1)
-		myuser.first_name = fname
-		myuser.last_name = lname
-		myuser.is_active = False
+		access_key = '2dde3cc4f9a4b8ad41e3ba0033bb8570'
+		ipstack_url = f'http://api.ipstack.com/{user_ip_address}?access_key={access_key}'
+		response = requests.get(ipstack_url)
 
-		myuser.save()
+		if response.status_code==200:
+			location_data = response.json()
+			user_state = location_data.get('region_name')
+			print(user_state)
+
+			disallowed_states = ['California']
+
+			if user_state in disallowed_states:
+				messages.error(request,"You are in a disallowed state.")
+				return redirect('home')
+
+			else:
+				myuser = User.objects.create_user(username, email, password1)
+				myuser.first_name = fname
+				myuser.last_name = lname
+				myuser.is_active = False
+
+				myuser.save()
+
+		else:
+			messages.error(request,"Failed to register location data")
+			return redirect('home')
+
 
 		messages.success(request, "Your Account has been successfully created!  We have sent you a confirmation email, please confirm your email in order to activate your account.")
 
