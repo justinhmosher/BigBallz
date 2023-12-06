@@ -80,6 +80,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bigBallz.wsgi.application'
 
+LOGIN_URL = '/signin'
+LOGOUT_REDIRECT_URL = '/sample'
+
+
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases

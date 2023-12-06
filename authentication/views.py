@@ -14,6 +14,9 @@ from . tokens import generate_token
 from django.template.loader import render_to_string
 import requests
 from decouple import config
+from django.contrib.auth.decorators import login_required
+
+
 
 def home(request):
 	return render(request, "authentication/index.html")
@@ -167,3 +170,7 @@ def activate(request, uidb64, token):
 
 def sample(request):
 	return render(request,"authentication/sample.html")
+
+@login_required
+def game(request):
+	return render(request,"authentication/game.html")
